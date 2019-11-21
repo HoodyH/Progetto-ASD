@@ -1,8 +1,5 @@
 #!/usr/bin/env python
-from sorting.sorting import MedianOfMedians
-
-
-EXAMPLE_ARRAY = [0.05, 0.05, 0.1, 0.1, 0.15, 0.2, 0.35]
+from core.lwm import MedianOfMedians
 
 
 def read_input():
@@ -29,18 +26,16 @@ def read_input():
 def main():
 
     array = read_input()
-    print(array)
     """
     s = Sorting()
     out = s.rand_select(array, 0, len(array)-1, 3)
     print(out)
     """
-    return
 
-    m = MedianOfMedians(array)
-    out = m.lower_weighted_median(0, len(array)-1)
+    m = MedianOfMedians()
+    out = m.lwm_calculate(array, 0, len(array) - 1)
     print(out)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
