@@ -1,7 +1,7 @@
 import math
 
 
-class MedianOfMedians(object):
+class LowMedianWeighted(object):
 
     def __init__(self):
         self.array = []

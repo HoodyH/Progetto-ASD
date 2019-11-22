@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-from core.lwm import MedianOfMedians
+from core.lwm_naive import LowMedianWeightedNaive
+from core.lwm import LowMedianWeighted
 
 
 def read_input():
@@ -32,9 +33,14 @@ def main():
     print(out)
     """
 
-    m = MedianOfMedians()
+    m_naive = LowMedianWeightedNaive()
+    out_naive = m_naive.lwm_calculate(array, 0, len(array) - 1)
+
+    m = LowMedianWeighted()
     out = m.lwm_calculate(array, 0, len(array) - 1)
-    print(out)
+
+    print('lwm naive: {}'.format(out_naive))
+    print('lwm: {}'.format(out))
 
 
 if __name__ == '__main__':

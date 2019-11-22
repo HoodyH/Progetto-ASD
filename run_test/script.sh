@@ -6,7 +6,7 @@
 clear
 path="test"
 mkdir $path/$1
-for i in {1..2}
+for i in {1..5}
 do
 echo "run test on in-$i"
 ./$2 $3 < $path/in-$i > $path/$1/out-$i
