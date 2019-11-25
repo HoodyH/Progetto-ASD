@@ -34,7 +34,7 @@ def main():
     """
 
     m_naive = LowMedianWeightedNaive()
-    out_naive = m_naive.lwm_calculate(array, 0, len(array) - 1)
+    out_naive = m_naive.lwm_calculate(array)
 
     m = LowMedianWeighted()
     out = m.lwm_calculate(array, 0, len(array) - 1)

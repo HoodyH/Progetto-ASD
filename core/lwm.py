@@ -29,52 +29,66 @@ class LowMedianWeighted(object):
         """
         self.array = array
         self.sum_array = sum(array)
+        if self.sum_array is 0:
+            return 0
 
         idx_pivot = self.__pivot(left, right)
         self.idx_median = self.__partition3(left, right, idx_pivot)
 
-        self.sum_left = sum(self.array[:self.idx_median - 1])
-        self.sum_right = sum(self.array[self.idx_median + 1:])
+        left_array = self.array[:self.idx_median]
+        print(left_array)
+        self.sum_left = sum(left_array)
+        right_array = self.array[self.idx_median + 1:]
+        print(right_array)
+        self.sum_right = sum(right_array)
 
-        if self.sum_array is 0:
-            return 0
-        else:
-            return self.__lwm_loop(left, right)
+        return self.__lwm_loop(left, right)
 
     def __lwm_loop(self, left, right):
 
         h_sum = self.sum_array / 2
 
-        while True:
+        print('idx median: {} --> S_left: {} < {} S_right: {} <= {}'.format(
+            self.idx_median,
+            self.sum_left,
+            h_sum,
+            self.sum_right,
+            h_sum,
+        ))
+        print()
 
-            print('S_left: {} < value: {} <= S_right: {}'.format(
-                self.sum_left,
-                self.array[self.idx_median],
-                self.sum_right)
-            )
+        if self.sum_left < h_sum and self.sum_right <= h_sum:
+            return self.array[self.idx_median]
 
-            if self.sum_left < h_sum <= self.sum_right:
-                return self.array[self.idx_median]
+        elif self.sum_left >= h_sum:
+            idx_prev_median = self.idx_median
+            idx_pivot = self.__pivot(left, self.idx_median)
+            self.idx_median = self.__partition3(left, self.idx_median, idx_pivot)
 
-            elif self.sum_left >= h_sum:
-                prev_media_index = self.idx_median
-                idx_pivot = self.__pivot(left, self.idx_median)
-                self.idx_median = self.__partition3(left, self.idx_median, idx_pivot)
+            left_array = self.array[:self.idx_median]
+            print(left_array)
+            right_array = self.array[self.idx_median + 1:]
+            print(right_array)
 
-                self.sum_right = self.sum_right + sum(self.array[self.idx_median + 1:prev_media_index])
-                self.sum_left = self.sum_array - self.sum_right + self.array[self.idx_median]
+            self.sum_right = self.sum_right + sum(self.array[self.idx_median + 1:idx_prev_median])
+            self.sum_left = self.sum_array - self.sum_right + self.array[self.idx_median]
 
-                return self.__lwm_loop(left, self.idx_median)
+            return self.__lwm_loop(left, self.idx_median)
 
-            else:
-                prev_media_index = self.idx_median
-                idx_pivot = self.__pivot(self.idx_median, right)
-                self.idx_median = self.__partition3(self.idx_median, right, idx_pivot)
+        else:
+            idx_prev_median = self.idx_median
+            idx_pivot = self.__pivot(self.idx_median, right)
+            self.idx_median = self.__partition3(self.idx_median, right, idx_pivot)
 
-                self.sum_left = self.sum_left + sum(self.array[prev_media_index:self.idx_median - 1])
-                self.sum_right = self.sum_array + self.sum_left + self.array[self.idx_median]
+            left_array = self.array[:self.idx_median]
+            print(left_array)
+            right_array = self.array[self.idx_median + 1:]
+            print(right_array)
 
-                return self.__lwm_loop(self.idx_median, right)
+            self.sum_left = self.sum_left + sum(self.array[idx_prev_median:self.idx_median - 1])
+            self.sum_right = self.sum_array + self.sum_left + self.array[self.idx_median]
+
+            return self.__lwm_loop(self.idx_median, right)
 
     def __pivot(self, left, right):
 
@@ -83,7 +97,7 @@ class LowMedianWeighted(object):
             return self.__median_of_5(left, right)
 
         # otherwise move the medians of five - element subgroups to the first n / 5 positions
-        idx = 0
+        idx = left
         while idx < right:
             # get the median position of the i 'th five-element subgroup
             sub_right = idx + 4
@@ -114,6 +128,7 @@ class LowMedianWeighted(object):
             else:
                 j += 1
 
+        print('after 3W partition: {}'.format(self.array))
         return int((i+dim)/2)
 
     """
