@@ -1,6 +1,4 @@
-
-
-class LowMedianWeightedNaive(object):
+class LowMedianWeightedNaive:
 
     def __init__(self):
         self.array = []
@@ -9,17 +7,17 @@ class LowMedianWeightedNaive(object):
         self.array = array
         self.__insertion_sort()
 
-        sum_weights = sum(self.array)
+        sum_tot = sum(self.array)/2
         wk = 0
         sum1 = 0
-        sum2 = self.array[0]
+        sum2 = 0  # self.array[0]
 
         for idx, el in enumerate(self.array):
+            sum1 += wk  # sum the previous element respect the pivot
+            sum2 += el
             wk = el
-            sum1 += self.__get_element(idx, wk)
-            sum2 += self.__get_element(idx + 1, wk, equal=True)
 
-            if sum1 < sum_weights <= sum2:
+            if sum1 < sum_tot <= sum2:
                 return wk
 
     def __insertion_sort(self):
@@ -34,13 +32,3 @@ class LowMedianWeightedNaive(object):
                 self.array[j + 1] = self.array[j]
                 j -= 1
             self.array[j + 1] = key
-
-    def __get_element(self, index, value, equal=False):
-        if equal:
-            return self.array[index]
-        else:
-            while self.array[index] >= value:
-                if index is 0:
-                    return 0
-                index -= 1
-            return self.array[index]

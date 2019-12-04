@@ -24,23 +24,33 @@ def read_input():
         return []
 
 
-def main():
+def prod():
 
     array = read_input()
-    """
-    s = Sorting()
-    out = s.rand_select(array, 0, len(array)-1, 3)
-    print(out)
-    """
+    print('Input' + str(array))
 
     m_naive = LowMedianWeightedNaive()
     out_naive = m_naive.lwm_calculate(array)
 
     m = LowMedianWeighted()
-    out = m.lwm_calculate(array, 0, len(array) - 1)
+    # out = m.lwm_calculate(array, 0, len(array) - 1)
 
     print('lwm naive: {}'.format(out_naive))
-    print('lwm: {}'.format(out))
+    # print('lwm: {}'.format(out))
+
+
+def test():
+
+    # Here are some example lists you can use to see how the algorithm works
+    a_list = [1, 2, 3, 4, 5, 1000, 8, 9, 99]
+    b_list = [1, 2, 3, 4, 5, 6]
+    print(median_of_medians(a_list, 0))  # should be 1
+    print(median_of_medians(a_list, 7))  # should be 99
+    print(median_of_medians(b_list, 4))  # should be 5
+
+
+def main():
+    prod()
 
 
 if __name__ == '__main__':
