@@ -16,8 +16,11 @@ class LowMedianWeighted(object):
         self.idx_median = None
 
     @property
-    def lwm(self):
-        return self.array[self.idx_median]
+    def result(self):
+        if self.idx_median:
+            return self.array[self.idx_median]
+        else:
+            return 0
 
     def lwm_calculate(self, array, left, right):
         """
@@ -59,8 +62,6 @@ class LowMedianWeighted(object):
             h_sum,
         ))
         print()
-
-        debug = 1
 
         if self.sum_left < h_sum and self.sum_right <= h_sum:
             return self.array[self.idx_median]
@@ -118,86 +119,3 @@ class LowMedianWeighted(object):
 
         right = left + math.floor((right - left) / 5)
         return self.__median_of_medians(left, right)
-
-    def __partition3(self, left, right, idx_pivot):
-        j = i = left
-        dim = right
-        pivot_el = self.array[idx_pivot]
-
-        while j <= dim:
-            if self.array[j] < pivot_el:
-                self.__swap(i, j)
-                i += 1
-                j += 1
-
-            elif self.array[j] > pivot_el:
-                self.__swap(j, dim)
-                dim -= 1
-            else:
-                j += 1
-
-        print('after 3W partition: {}'.format(self.array))
-        return int((i+dim)/2)
-
-    """
-    def __partition(self, left, right, pivot_idx):
-        pivot_val = self.array[pivot_idx]
-
-        # move idx_pivot to the end
-        self.__swap(pivot_idx, right)
-        store_idx = left
-
-        # move elements smaller then the idx_pivot to the left
-        for idx in range(left, right - 1):
-            if self.array[idx] < pivot_val:
-                self.__swap(store_idx, idx)
-                store_idx += 1
-
-        store_idx_eq = store_idx
-        for idx in range(store_idx, right - 1):
-            if self.array[idx] == pivot_val:
-                self.__swap(store_idx_eq, idx)
-                store_idx_eq += 1
-
-        # muove il idx_pivot nella sua posizione finale
-        self.__swap(store_idx_eq, right)
-
-        return store_idx_eq
-    """
-
-    def __median_of_5(self, left, right):
-        self.__insertion_sort(left, right)
-        median = math.floor((left+right) / 2)
-        print('median5 [{}:{}]: {} = {}'.format(left, right, self.array[left:right + 1], self.array[median]))
-        return median
-
-    def __insertion_sort(self, left, right):
-
-        for idx in range(left+1, right+1):
-
-            key = self.array[idx]
-            """
-            Sposta gli elementi dell'array[0..idx-1], che sono maggiori della chiave
-            ad una posizione avanti rispetto alla corrente
-            """
-            j = idx - 1
-            while j >= left and key < self.array[j]:
-                self.array[j + 1] = self.array[j]
-                j -= 1
-            self.array[j + 1] = key
-
-    def __swap(self, idx_1, idx_2):
-        self.array[idx_1], self.array[idx_2] = self.array[idx_2], self.array[idx_1]
-
-
-"""
-    def partition5(self, left, right):
-        i = left + 1
-        while i <= right:
-            j = i
-            while j > left and self.array[j - 1] > self.array[j]:
-
-                j -= 1
-            i -= 1
-        return math.floor((left + right) / 2)
-"""
