@@ -3,8 +3,8 @@ class SeedGenerator(object):
     def __init__(self):
         self. seeds = []
 
-    def generate_seed(self):
-        seed = self.seeds.getSeed()
+    def pseudo_random(self):
+        seed = self.seeds[-1]
         a = 16807
         m = 2147483647
         q = 127773
@@ -20,3 +20,9 @@ class SeedGenerator(object):
             self.seeds.append(test)
 
         return seed / m
+
+    def generate_array(self, num_elements):
+
+        random_array = []
+        while range(num_elements):
+            random_array.append(self.pseudo_random())

@@ -139,7 +139,6 @@ class LowMedianWeighted(object):
     def __median_of_5(self, left, right):
         self.__insertion_sort(left, right)
         median = (left+right) // 2
-        print('median5 [{}:{}]: {} = {}'.format(left, right, self.array[left:right + 1], self.array[median]))
         return median
 
     def __insertion_sort(self, left, right):
