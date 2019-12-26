@@ -15,12 +15,12 @@ def prod():
         return
 
     m_naive = LowMedianWeightedNaive()
-    out_naive = m_naive.lwm_calculate(array)
+    m_naive.lwm(array)
 
     m = LowMedianWeighted()
-    m.lwm(array, 0, len(array) - 1)
+    m.lwm(array)
 
-    print('lwm naive: {}'.format(out_naive))
+    print('lwm naive: {}'.format(m_naive.result))
     print('lwm: {}'.format(m.result))
 
 

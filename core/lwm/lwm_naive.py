@@ -2,8 +2,9 @@ class LowMedianWeightedNaive:
 
     def __init__(self):
         self.array = []
+        self.__result = None
 
-    def lwm_calculate(self, array):
+    def lwm(self, array):
         self.array = array
         self.__insertion_sort()
 
@@ -18,7 +19,7 @@ class LowMedianWeightedNaive:
             wk = el
 
             if sum1 < sum_tot <= sum2:
-                return wk
+                self.__result = wk
 
     def __insertion_sort(self):
         left = 0
@@ -32,3 +33,8 @@ class LowMedianWeightedNaive:
                 self.array[j + 1] = self.array[j]
                 j -= 1
             self.array[j + 1] = key
+
+    @property
+    def result(self):
+        return self.result
+

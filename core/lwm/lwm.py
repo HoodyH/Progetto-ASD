@@ -17,7 +17,7 @@ class LowMedianWeighted(object):
         else:
             return 0
 
-    def lwm(self, array, left, right):
+    def lwm(self, array):
 
         self.array = array
         self.sum_array = sum(array)
@@ -27,7 +27,7 @@ class LowMedianWeighted(object):
             return 0
 
         check_value = self.sum_array / 2
-        self.idx_median = self.__lwm_calculate(left, right, check_value)
+        self.idx_median = self.__lwm_calculate(0, len(array) - 1, check_value)
 
     def __lwm_calculate(self, left, right, check_value):
 

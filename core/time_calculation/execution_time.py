@@ -1,5 +1,10 @@
-from core.time_calculation.time import TimeCalculation
-from core.time_calculation.generator import SeedGenerator
+import sys
+
+from core.lwm.lwm_naive import LowMedianWeightedNaive
+from core.lwm.lwm import LowMedianWeighted
+
+from core.time_calculation.time_calculation import TimeCalculation
+from core.time_calculation.rand_generator import RandGenerator
 
 
 class ExecutionTimeCalculation(object):
@@ -8,9 +13,27 @@ class ExecutionTimeCalculation(object):
 
         self.execution_times = []
 
-        # self.tc = TimeCalculation()
+        self.tc = TimeCalculation()
+        self.rg = RandGenerator()
 
     def run(self):
-        sg = SeedGenerator()
-        out = sg.generate_array(10)
-        print(out)
+
+        m = LowMedianWeighted()
+        array_len = 12000
+
+        for i in range(0, 20):
+
+            c = 10
+
+            print('Calculating for {} elements...'.format(array_len))
+            time = self.tc.measure(
+                self.rg.generate_array,
+                m.lwm,
+                array_len,
+                c,
+                self.tc.calculate_time_min_resolution(),
+                sys.float_info.max,
+            )
+
+            print('{} el time: {}\n'.format(array_len, time))
+            array_len += 1000
