@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from test.main_test.config import (execute_time_calculation)
+from core.config import (execute_time_calculation)
 
 from core.lwm.lwm_naive import LowMedianWeightedNaive
 from core.lwm.lwm import LowMedianWeighted

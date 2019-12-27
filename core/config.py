@@ -1,6 +1,6 @@
 # no more used in the project
 
-debug = True
+debug_en = True
 
 execute_time_calculation = True
 interval = 500

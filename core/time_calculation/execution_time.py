@@ -1,5 +1,7 @@
 import sys
 
+from core.util.debug import debug
+
 from core.lwm.lwm_naive import LowMedianWeightedNaive
 from core.lwm.lwm import LowMedianWeighted
 
@@ -42,7 +44,7 @@ class ExecutionTimeCalculation(object):
             c = 10
             za = 1.96
 
-            print('Calculating for {} elements...'.format(array_len))
+            debug('Calculating for {} elements...'.format(array_len))
             time, delta = self.tc.measure(
                 self.rg.generate_array,
                 self.m.lwm,
@@ -52,8 +54,11 @@ class ExecutionTimeCalculation(object):
                 self.tc.calculate_time_min_resolution(),
                 sys.float_info.max,
             )
-
-            print('{} el time: {}, delta: {}\n'.format(array_len, time, delta))
+            debug('{} el time: {}, delta: {}\n'.format(
+                array_len,
+                str(time).replace('.', ','),
+                str(delta).replace('.', ',')
+            ))
             out.append((increment, time, delta))
             array_len += increment
 

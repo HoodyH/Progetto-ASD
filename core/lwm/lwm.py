@@ -1,3 +1,6 @@
+from core.util.debug import debug
+
+
 class LowMedianWeighted(object):
 
     def __init__(self):
@@ -27,55 +30,42 @@ class LowMedianWeighted(object):
             return 0
 
         check_value = self.sum_array / 2
-        self.idx_median = self.__lwm_calculate(0, len(array) - 1, check_value)
+        self.idx_median = self.__select(0, len(array) - 1, check_value)
 
-    def __lwm_calculate(self, left, right, check_value):
-
-        # Find the values who will work as key
-        key = self.__select(left, right)
-        idx_lwm = self.__partition(left, right, key)
-
-        # Add all the elements smaller or equal than the key (excluded)
-        partial_sum = sum(self.array[left:idx_lwm])
-
-        """
-        If adding the key to the partial_sum
-        makes this greater than the target return the key,
-        else recursively search in the relative subarray
-        """
-        if check_value > partial_sum >= check_value - self.array[idx_lwm]:
-            return idx_lwm
-        elif partial_sum == check_value:
-            return idx_lwm - 1
-        elif partial_sum > check_value:
-            return self.__lwm_calculate(left, idx_lwm, check_value)
-        else:
-            return self.__lwm_calculate(idx_lwm, right, check_value - partial_sum)
-
-    def __select(self, left, right):
+    def __select(self, left, right, check_value):
         """
         :param left: lower index of the array.
         :param right: higher index of the array.
+        :param check_value: the control value
         """
 
-        # Find the median of medians
-        median_of_medians = self.__median_of_medians(left, right)
+        x = self.__median_of_medians(left, right)
 
-        # Partition the array around the median of medians
-        key = self.__partition(left, right, median_of_medians)
-        
-        """ 
-        If key is the desired value return key
+        """
+        4. 
+        Partition the array around the median of medians
+        """
+        key = self.__partition(left, right, x)
+
+        # Add all the elements smaller or equal than the key (excluded)
+        partial_sum = sum(self.array[left:key])
+
+        """
+        5.
+        If adding the key to the partial_sum
+        makes this greater than the target return the key,
         else recursively select in relative subarray
         """
-        middle_idx = (right + left) // 2
+        debug('median: {}'.format(self.array[key]))
 
-        if key == middle_idx:
+        if check_value > partial_sum >= check_value - self.array[key]:
             return key
-        elif key > middle_idx:
-            return self.__select(left, key - 1)
-        elif key < middle_idx:
-            return self.__select(key, right)
+        elif partial_sum == check_value:
+            return key - 1
+        elif partial_sum > check_value:
+            return self.__select(left, key, check_value)
+        else:
+            return self.__select(key, right, check_value - partial_sum)
 
     def __median_of_medians(self, left, right):
         """
@@ -139,6 +129,7 @@ class LowMedianWeighted(object):
     def __median_of_5(self, left, right):
         self.__insertion_sort(left, right)
         median = (left+right) // 2
+        debug('md5[{}:{}] {} median: {}'.format(left, right, self.array[left:right], self.array[median]))
         return median
 
     def __insertion_sort(self, left, right):
