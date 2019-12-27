@@ -68,13 +68,13 @@ class LowMedianWeighted(object):
         If key is the desired value return key
         else recursively select in relative subarray
         """
-        mid1e_idx = (right + left) // 2
+        middle_idx = (right + left) // 2
 
-        if key == mid1e_idx:
+        if key == middle_idx:
             return key
-        elif key > mid1e_idx:
+        elif key > middle_idx:
             return self.__select(left, key - 1)
-        elif key < mid1e_idx:
+        elif key < middle_idx:
             return self.__select(key, right)
 
     def __median_of_medians(self, left, right):

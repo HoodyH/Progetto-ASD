@@ -16,24 +16,45 @@ class ExecutionTimeCalculation(object):
         self.tc = TimeCalculation()
         self.rg = RandGenerator()
 
-    def run(self):
+        self.m = LowMedianWeighted()
+        self.m_naive = LowMedianWeightedNaive()
 
-        m = LowMedianWeighted()
-        array_len = 12000
+    def single_time_calculation(self, array_len):
 
-        for i in range(0, 20):
+        time, delta = self.tc.measure(
+            self.rg.generate_array,
+            self.m.lwm,
+            array_len,
+            10,
+            1.96,
+            self.tc.calculate_time_min_resolution(),
+            sys.float_info.max,
+        )
+        return time, delta
+
+    def multiple_time_calculation(self, array_len_start, increment, max_value):
+
+        out = []
+        array_len = array_len_start
+
+        while array_len < max_value:
 
             c = 10
+            za = 1.96
 
             print('Calculating for {} elements...'.format(array_len))
-            time = self.tc.measure(
+            time, delta = self.tc.measure(
                 self.rg.generate_array,
-                m.lwm,
+                self.m.lwm,
                 array_len,
                 c,
+                za,
                 self.tc.calculate_time_min_resolution(),
                 sys.float_info.max,
             )
 
-            print('{} el time: {}\n'.format(array_len, time))
-            array_len += 1000
+            print('{} el time: {}, delta: {}\n'.format(array_len, time, delta))
+            out.append((increment, time, delta))
+            array_len += increment
+
+        return out

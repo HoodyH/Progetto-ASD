@@ -93,7 +93,7 @@ class TimeCalculation(object):
         time_average = (time_gross / rip_gross) - (time_tare / rip_tare)
         return time_average
 
-    def measure(self, prepare_f, main_f, d, c, t_min, delta):
+    def measure(self, prepare_f, main_f, d, c, za, t_min, delta):
         t = 0
         sum_2 = 0
         cn = 0
@@ -108,6 +108,6 @@ class TimeCalculation(object):
             cn += c
             e = t / cn
             s = math.sqrt(sum_2 / cn - (e * e))
-            delta = (1 / math.sqrt(cn)) * s * 1.96
+            delta = (1 / math.sqrt(cn)) * za * s
 
-        return e
+        return e, delta
