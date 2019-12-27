@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from core.config import (execute_time_calculation)
+from core.config import *
 
 from core.lwm.lwm_naive import LowMedianWeightedNaive
 from core.lwm.lwm import LowMedianWeighted
@@ -26,7 +26,7 @@ def prod():
 
 def time_calculation():
     etc = ExecutionTimeCalculation()
-    etc.multiple_time_calculation()
+    etc.multiple_time_calculation(t_start_value, t_increment, t_max_value)
 
 
 def main():
