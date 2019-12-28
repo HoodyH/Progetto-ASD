@@ -18,17 +18,21 @@ class ExecutionTimeCalculation(object):
         self.tc = TimeCalculation()
         self.rg = RandGenerator()
 
-        self.m = LowMedianWeighted()
-        self.m_naive = LowMedianWeightedNaive()
+        self.c = 10
+        self.za = 1.96
+
+        m = LowMedianWeighted()
+        m_naive = LowMedianWeightedNaive()
+        self.function = m_naive.lwm
 
     def single_time_calculation(self, array_len):
 
         time, delta = self.tc.measure(
             self.rg.generate_array,
-            self.m.lwm,
+            self.function,
             array_len,
-            10,
-            1.96,
+            self.c,
+            self.za,
             self.tc.calculate_time_min_resolution(),
             sys.float_info.max,
         )
@@ -41,16 +45,13 @@ class ExecutionTimeCalculation(object):
 
         while array_len < max_value:
 
-            c = 10
-            za = 1.96
-
             debug('Calculating for {} elements...'.format(array_len))
             time, delta = self.tc.measure(
                 self.rg.generate_array,
-                self.m.lwm,
+                self.function,
                 array_len,
-                c,
-                za,
+                self.c,
+                self.za,
                 self.tc.calculate_time_min_resolution(),
                 sys.float_info.max,
             )
