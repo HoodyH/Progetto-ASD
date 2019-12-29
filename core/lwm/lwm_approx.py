@@ -1,17 +1,13 @@
 from core.util.debug import debug
 
 
-class LowMedianWeighted(object):
+class LowMedianWeightedApprox(object):
 
     def __init__(self):
         self.array = []
         self.sum_array = None
-        """
-        Per salvare la somma ad ogni ciclo
-        evitando di ricalcolare completamente.
-        """
 
-        self.idx_median = None
+        self.idx_median = None  # result
 
     @property
     def result(self):

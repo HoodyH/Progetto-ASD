@@ -1,17 +1,18 @@
 #!/usr/bin/env python
-from core.lwm.lwm_no_median import LowMedianWeighted
-from core.lwm.lwm_naive import LowMedianWeightedNaive
+from core.config import debug_check
+from core.lwm.lwm import LowMedianWeighted
 from core.util.read_input import read_input
 
 
 def prod():
+
+    debug_check()
 
     array = read_input()
     if not array:
         return
 
     m = LowMedianWeighted()
-    # m = LowMedianWeightedNaive()
     m.lwm(array)
 
     print('{}'.format(m.result))
