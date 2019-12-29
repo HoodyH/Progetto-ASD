@@ -3,7 +3,7 @@ import sys
 from core.util.debug import debug
 
 from core.lwm.lwm_naive import LowMedianWeightedNaive
-from core.lwm.lwm import LowMedianWeighted
+from core.lwm.lwm_no_median import LowMedianWeighted
 
 from core.time_calculation.time_calculation import TimeCalculation
 from core.time_calculation.rand_generator import RandGenerator

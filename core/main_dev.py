@@ -2,7 +2,7 @@
 from core.config import *
 
 from core.lwm.lwm_naive import LowMedianWeightedNaive
-from core.lwm.lwm import LowMedianWeighted
+from core.lwm.lwm_no_median import LowMedianWeighted
 from core.util.read_input import read_input
 
 from core.time_calculation.execution_time import ExecutionTimeCalculation

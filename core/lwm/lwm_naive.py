@@ -15,7 +15,7 @@ class LowMedianWeightedNaive:
         sum1 = 0
         sum2 = 0
 
-        for idx, el in enumerate(self.array):
+        for el in self.array:
             sum1 += wk  # sum the previous element
             sum2 += el
             wk = el

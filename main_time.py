@@ -16,7 +16,7 @@ def time_calculation():
             str(delta).replace('.', ',')
         ))
     else:
-        out = etc.multiple_time_calculation(array_len, 1000, 20000)
+        out = etc.multiple_time_calculation(array_len, 1000, 21000)
         for el in out:
             time_array_len, time, delta = el
             print('{};{};{}'.format(
