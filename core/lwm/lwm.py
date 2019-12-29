@@ -28,33 +28,48 @@ class LowMedianWeighted(object):
         check_value = self.sum_array / 2
         self.idx_median = self.__lwm_calculate(0, len(array) - 1, check_value)
 
-    def __lwm_calculate(self, left, right, check_value):
+    def __lwm_calculate(self, left, right, sumTarget):  # check_value
 
-        # Find the values who will work as key
-        idx_lwm = self.__select(left, right)
-        idx_tuple = self.__duplicated_values(idx_lwm)
-        # Add all the elements smaller or equal than the key (excluded)
-        partial_sum = self.__sum(self.array[left:idx_lwm])
+        med = (right - left) // 2
+        sommaTotale = self.sum_array
 
-        """
-        If adding the key to the partial_sum
-        makes this greater than the target return the key,
-        else recursively search in the relative subarray
-        """
-        if check_value > partial_sum >= check_value - self.array[idx_lwm]:
-            return idx_lwm
-        elif partial_sum == check_value:
-            return idx_lwm - 1
-        elif partial_sum > check_value:
-            return self.__lwm_calculate(left, idx_lwm, check_value)
-        else:
-            return self.__lwm_calculate(idx_lwm, right, check_value - partial_sum)
+        index = self.__select(left, right, med)
+        debug(index)
+        array_idx = self.__duplicated_values(index)
+        sumLeftPivot = self.__sum(self.array[0:array_idx[0]])
+        sumRightPivot = self.__sum(self.array[array_idx[1]:right+1])
 
-    def __select(self, left, right):
+        debug((sumLeftPivot, sumLeftPivot))
+        while not (sumLeftPivot < sumTarget and sumRightPivot <= sumTarget):
+            if sumLeftPivot >= sumTarget:
+                tmpRight = index
+                med = left + (tmpRight - left) / 2
+                index = self.__select(left, tmpRight, med)
+
+                array_idx = self.__duplicated_values(index)
+
+                sumRightPivot = sumRightPivot + self.__sum(self.array[array_idx[1] + 1:tmpRight])
+                sumLeftPivot = sommaTotale - sumRightPivot - self.__sum(self.array[array_idx[0]: array_idx[1]])
+
+            else:
+                tmpLeft = index
+                med = tmpLeft + (right - tmpLeft) / 2
+                index = self.__select(tmpLeft, right, med)
+
+                array_idx = self.__duplicated_values(index)
+
+                sumLeftPivot = sumLeftPivot + self.__sum(self.array[tmpLeft: array_idx[0] - 1])
+                sumRightPivot = sommaTotale - sumLeftPivot - self.__sum(self.array[array_idx[0]:array_idx[1]])
+
+            return index
+
+    def __select(self, left, right, num):
         """
         :param left: lower index of the array.
         :param right: higher index of the array.
         """
+        if right is left:
+            return left
 
         # Find the median of medians
         median_of_medians = self.__median_of_medians(left, right)
@@ -66,14 +81,13 @@ class LowMedianWeighted(object):
         If key is the desired value return key
         else recursively select in relative subarray
         """
-        middle_idx = (right + left) // 2
 
-        if key[0] == middle_idx:
+        if key[0] is num:
             return key[0]
-        elif key[0] > middle_idx:
-            return self.__select(left, key[0] - 1)
-        elif key[0] < middle_idx:
-            return self.__select(key[1], right)
+        elif key[0] > num:
+            return self.__select(left, key[0] - 1, num)
+        elif key[0] < num:
+            return self.__select(key[1], right, num)
 
     def __median_of_medians(self, left, right):
         """
@@ -81,65 +95,73 @@ class LowMedianWeighted(object):
         :param right: higher index of the array.
         """
         # If the array is less then 5 elements, just get median
-        if right - left < 5:
+        dim = right - left
+        if right - left <= 5:
             return self.__median_of_5(left, right)
 
         """
         1.  
         Divide the array in n/5 subarray of 5 elements each
         """
-        idx = left
-        while idx < right:
-            # get the median position of the i 'th five-element subgroup
-            sub_right = idx + 4
-            if sub_right > right:
-                sub_right = right
+        start = left
+        stop = left + 5
+        medianPos = left
+        iterations = dim//5
+
+        idx = 0
+        while idx < iterations:
             """
             2. 
             Find the median of each subarray picking the middle elements of the sorted subarray
             then move the medians of five value to the first n / 5 positions
             """
-            median_of_5 = self.__median_of_5(idx, sub_right)
-            saving_idx = left + (idx - left) // 5
-            self.__swap(median_of_5, saving_idx)
+            median_of_5 = self.__median_of_5(start, stop-1)
+            self.__swap(median_of_5, medianPos)
+            medianPos += 1
+            start = stop
+            stop += 5
+            idx += 1
 
-            idx += 5
-
-        right = left + (right - left) // 5
+        if start < dim:
+            median_of_5 = self.__median_of_5(start, dim)
+            self.__swap(median_of_5, medianPos)
+            medianPos += 1
         """
         3.
         Do it recursively to find the median of medians
         """
-        return self.__select(left, right)
+        mid = left + (medianPos - left)//2
+        return self.__select(left, medianPos, mid)
 
     def __partition(self, left, right, idx_pivot):
 
         pivot_el = self.array[idx_pivot]
         self.__swap(right, idx_pivot)
 
-        idx_min = left
-        idx_max = right - 1
-        i = left
+        low = left
+        high = right - 1
+        mid = left
 
-        while i <= idx_max:
-            if self.array[i] < pivot_el:
-                self.__swap(i, idx_min)
-                i += 1
-                idx_min += 1
+        while mid <= high:
+            if self.array[mid] < pivot_el:
+                self.__swap(mid, low)
+                mid += 1
+                low += 1
 
-            elif self.array[i] > pivot_el:
-                self.__swap(i, idx_max)
-                idx_max -= 1
+            elif self.array[mid] > pivot_el:
+                self.__swap(mid, high)
+                high -= 1
             else:
-                i += 1
+                mid += 1
 
-        idx_max += 1
-        self.__swap(right, idx_max)
-        return idx_max, idx_min
+        high += 1
+        self.__swap(right, high)
+        return low, high
 
     def __median_of_5(self, left, right):
         self.__insertion_sort(left, right)
         median = (left+right) // 2
+        debug('md5[{}:{}] {} median: {}'.format(left, right, self.array[left:right+1], self.array[median]))
         return median
 
     def __insertion_sort(self, left, right):
@@ -168,6 +190,8 @@ class LowMedianWeighted(object):
 
     @staticmethod
     def __sum(array):
+        if not isinstance(array, list):
+            return array
         result = 0
         for el in array:
             result += el

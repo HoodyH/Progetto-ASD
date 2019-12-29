@@ -68,6 +68,9 @@ class LowMedianWeightedApprox(object):
         :param left: lower index of the array.
         :param right: higher index of the array.
         """
+        if right is left:
+            return left
+
         # If the array is less then 5 elements, just get median
         if right - left < 5:
             return self.__median_of_5(left, right)
@@ -101,26 +104,26 @@ class LowMedianWeightedApprox(object):
         return self.__median_of_medians(left, right)
 
     def __partition(self, left, right, idx_pivot):
-        j = i = left
-        dim = right
+        mid = low = left
+        high = right
         pivot_el = self.array[idx_pivot]
 
-        while j <= dim:
-            if self.array[j] < pivot_el:
-                self.__swap(i, j)
-                i += 1
-                j += 1
+        while mid <= high:
+            if self.array[mid] < pivot_el:
+                self.__swap(low, mid)
+                low += 1
+                mid += 1
 
-            elif self.array[j] > pivot_el:
-                self.__swap(j, dim)
-                dim -= 1
-            else:
-                j += 1
+            elif self.array[mid] > pivot_el:
+                self.__swap(mid, high)
+                high -= 1
+            elif self.array[mid] == pivot_el:
+                mid += 1
 
-        if i is dim:
-            return i
+        if low is high:
+            return low
         else:
-            return (i+dim) // 2
+            return (low+high) // 2
 
     def __median_of_5(self, left, right):
         self.__insertion_sort(left, right)
