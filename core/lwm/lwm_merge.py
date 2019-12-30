@@ -8,6 +8,10 @@ class LowMedianWeightedMerge:
         self.__result = None
 
     def lwm(self, array):
+        """
+        :param array: l'array nel quale trovare la mediana pesata inferiore
+        :return:
+        """
         self.array = array
 
         self.__merge_sort(self.array)
@@ -34,10 +38,14 @@ class LowMedianWeightedMerge:
 
     def __merge_sort(self, array):
 
+        """
+        :param array: l'array da ordinare
+        """
         array_len = len(array)
         if array_len > 1:
 
             center = array_len // 2
+            # array tem
             temp_left = array[:center]  # Dividing the array elements
             temp_right = array[center:]  # into 2 halves
 
@@ -45,8 +53,13 @@ class LowMedianWeightedMerge:
             self.__merge_sort(temp_right)
 
             i = j = k = 0
-
-            # Copy data to temp arrays temp_left[] and temp_right[]
+            """
+            Unisce due subarrays di arr [].
+            Il primo subarray è arr [l..m]
+            Il secondo subarray è arr [m + 1..r]
+            
+            Copia i dati da temp array temp_left[] and temp_right[] nell'array di origine
+            """
             while i < len(temp_left) and j < len(temp_right):
                 if temp_left[i] < temp_right[j]:
                     array[k] = temp_left[i]
@@ -56,12 +69,13 @@ class LowMedianWeightedMerge:
                     j += 1
                 k += 1
 
-            # Checking if any element was left
+            # Controlla se ci sono elementi rimasti a sinistra
             while i < len(temp_left):
                 array[k] = temp_left[i]
                 i += 1
                 k += 1
 
+            # Controlla se ci sono elementi rimasti a sinistra
             while j < len(temp_right):
                 array[k] = temp_right[j]
                 j += 1
