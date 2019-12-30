@@ -10,7 +10,7 @@ Su linux e' gia definito l'interprete quindi e' possibile eseguire il programma 
 In alternativa e' possibile eseguire in programma nel modo standard con:
 python3 main.py "args"
 python3 main_time.py "args"
-Questo metodo funziona su tutti i sitemi operativi.
+Questo metodo funziona su tutti i sistemi operativi.
 
 Se si e' in un ambiente virtuale (venv) l'esecuzione viene fatta con: 
 python main.py "args"

@@ -1,6 +1,6 @@
 import sys
 
-from core.util.debug import debug
+from core.util.debug import debug_time
 
 from core.time_calculation.time_calculation import TimeCalculation
 from core.time_calculation.rand_generator import RandGenerator
@@ -40,7 +40,7 @@ class ExecutionTimeCalculation(object):
 
         while array_len < max_value:
 
-            debug('Calculating for {} elements...'.format(array_len))
+            debug_time('Calculating for {} elements...'.format(array_len))
             time, delta = self.tc.measure(
                 self.rg.generate_array,
                 self.function,
@@ -50,7 +50,7 @@ class ExecutionTimeCalculation(object):
                 self.tc.calculate_time_min_resolution(),
                 sys.float_info.max,
             )
-            debug('{} el time: {}, delta: {}\n'.format(
+            debug_time('{} el time: {}, delta: {}\n'.format(
                 array_len,
                 str(time).replace('.', ','),
                 str(delta).replace('.', ',')

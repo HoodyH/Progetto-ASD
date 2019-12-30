@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from core.config import debug_check
-from core.lwm.lwm import LowMedianWeighted
+from core.lwm.lwm_merge import LowMedianWeightedMerge
 from core.util.read_input import read_input
 
 
@@ -12,7 +12,7 @@ def prod():
     if not array:
         return
 
-    m = LowMedianWeighted()
+    m = LowMedianWeightedMerge()
     m.lwm(array)
 
     print('{}'.format(m.result))

@@ -1,4 +1,4 @@
-from core.util.debug import debug
+from core.util.debug import debug_lwm
 
 
 class LowMedianWeighted(object):
@@ -34,12 +34,12 @@ class LowMedianWeighted(object):
         sommaTotale = self.sum_array
 
         index = self.__select(left, right, med)
-        debug(index)
+        debug_lwm(index)
         array_idx = self.__duplicated_values(index)
         sumLeftPivot = self.__sum(self.array[0:array_idx[0]])
         sumRightPivot = self.__sum(self.array[array_idx[1]:right+1])
 
-        debug((sumLeftPivot, sumLeftPivot))
+        debug_lwm((sumLeftPivot, sumLeftPivot))
         while not (sumLeftPivot < sumTarget and sumRightPivot <= sumTarget):
             if sumLeftPivot >= sumTarget:
                 tmpRight = index
@@ -161,7 +161,7 @@ class LowMedianWeighted(object):
     def __median_of_5(self, left, right):
         self.__insertion_sort(left, right)
         median = (left+right) // 2
-        debug('md5[{}:{}] {} median: {}'.format(left, right, self.array[left:right+1], self.array[median]))
+        debug_lwm('md5[{}:{}] {} median: {}'.format(left, right, self.array[left:right + 1], self.array[median]))
         return median
 
     def __insertion_sort(self, left, right):
@@ -181,7 +181,7 @@ class LowMedianWeighted(object):
         x = idx
 
         while self.array[x] == self.array[x+1]:
-            debug("{}\t{}".format(self.array[x], self.array[x+1]))
+            debug_lwm("{}\t{}".format(self.array[x], self.array[x + 1]))
             x += 1
         return idx, x
 

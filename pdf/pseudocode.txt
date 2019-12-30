@@ -1,0 +1,15 @@
+Select (A, p, r, i):
+
+IF p = r then
+    return A[p]  # caso base
+
+q = Partition (A, p, r)
+k = q − p + 1  # k is the rank of pivot A[q]
+
+IF i is k then  # we found it!
+    return A[q]
+
+IF i < k then  # ricorsione sulla parte sinistra rispetto al pivot
+    return Select (A, p, q, i)
+ELSE  # ricorsione sulla parte destra rispetto al pivot
+    return Select(A, q + 1, r, i - k)
